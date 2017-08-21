@@ -23,7 +23,7 @@
 #include <iwinfo/utils.h>
 
 #include <rpcd/plugin.h>
-
+#include <json-c/json.h>
 
 static struct blob_buf buf;
 static const struct iwinfo_ops *iw;
