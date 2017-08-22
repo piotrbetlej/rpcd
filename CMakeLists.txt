@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.6)
 INCLUDE(CheckFunctionExists)
 
 PROJECT(rpcd C)
-ADD_DEFINITIONS(-Os -Wall -Werror --std=gnu99 -g3 -Wmissing-declarations)
+ADD_DEFINITIONS(-Os -Werror --std=gnu99 -g3 -Wmissing-declarations)
 INCLUDE_DIRECTORIES(include)
 
 OPTION(FILE_SUPPORT "File plugin support" ON)
@@ -29,6 +29,9 @@ ENDIF()
 
 ADD_EXECUTABLE(rpcd main.c exec.c session.c uci.c plugin.c)
 TARGET_LINK_LIBRARIES(rpcd ubox ubus uci dl blobmsg_json ${json} ${crypt})
+
+ADD_EXECUTABLE(iwinfo_cli iwinfo_cli.c)
+TARGET_LINK_LIBRARIES(iwinfo_cli ubox ubus iwinfo blobmsg_json)
 
 SET(PLUGINS "")
 
