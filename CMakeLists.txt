@@ -23,6 +23,7 @@ ENDIF()
 
 FIND_LIBRARY(json NAMES json-c json)
 FIND_LIBRARY(crypt NAMES crypt)
+FIND_LIBRARY(nl NAMES nl nl-genl)
 IF(crypt STREQUAL "crypt-NOTFOUND")
   SET(crypt "")
 ENDIF()
@@ -31,7 +32,7 @@ ADD_EXECUTABLE(rpcd main.c exec.c session.c uci.c plugin.c)
 TARGET_LINK_LIBRARIES(rpcd ubox ubus uci dl blobmsg_json ${json} ${crypt})
 
 ADD_EXECUTABLE(iwinfo_cli iwinfo_cli.c)
-TARGET_LINK_LIBRARIES(iwinfo_cli ubox ubus iwinfo blobmsg_json)
+TARGET_LINK_LIBRARIES(iwinfo_cli ubox ubus iwinfo blobmsg_json nl-3 nl-genl-3)
 
 SET(PLUGINS "")
 
