@@ -18,16 +18,21 @@
 
 #include <sys/types.h>
 #include <dirent.h>
-#include <libubus.h>
 #include <iwinfo.h>
 #include <iwinfo/utils.h>
 
-#include <rpcd/plugin.h>
+#include <libubox/blobmsg.h>
+#include <libubox/blobmsg_json.h>
 #include <json-c/json.h>
 
 static struct blob_buf buf;
 static const struct iwinfo_ops *iw;
 static const char *ifname;
+
+#define UBUS_STATUS_INVALID_ARGUMENT -1
+#define UBUS_STATUS_OK 0
+#define UBUS_STATUS_NOT_FOUND -1
+#define UBUS_STATUS_UNKNOWN_ERROR -1
 
 enum {
 	RPC_D_DEVICE,
@@ -232,9 +237,7 @@ rpc_iwinfo_call_str(const char *name, int (*func)(const char *, char *))
 }
 
 static int
-rpc_iwinfo_info(struct ubus_context *ctx, struct ubus_object *obj,
-                struct ubus_request_data *req, const char *method,
-                struct blob_attr *msg)
+rpc_iwinfo_info(struct blob_attr *msg)
 {
 	int rv;
 	void *c;
@@ -285,9 +288,7 @@ rpc_iwinfo_info(struct ubus_context *ctx, struct ubus_object *obj,
 }
 
 static int
-rpc_iwinfo_scan(struct ubus_context *ctx, struct ubus_object *obj,
-                struct ubus_request_data *req, const char *method,
-                struct blob_attr *msg)
+rpc_iwinfo_scan(struct blob_attr *msg)
 {
 	int i, rv, len;
 	void *c, *d;
@@ -344,8 +345,7 @@ rpc_iwinfo_scan(struct ubus_context *ctx, struct ubus_object *obj,
 }
 
 static int
-rpc_iwinfo_assoclist(struct ubus_context *ctx, struct ubus_object *obj,
-                     struct ubus_request_data *req, const char *method,
+rpc_iwinfo_assoclist(const char *method,
                      struct blob_attr *msg)
 {
 	int i, rv, len;
@@ -407,8 +407,7 @@ rpc_iwinfo_assoclist(struct ubus_context *ctx, struct ubus_object *obj,
 }
 
 static int
-rpc_iwinfo_freqlist(struct ubus_context *ctx, struct ubus_object *obj,
-                    struct ubus_request_data *req, const char *method,
+rpc_iwinfo_freqlist(const char *method,
                     struct blob_attr *msg)
 {
 	int i, rv, len, ch;
@@ -456,8 +455,7 @@ rpc_iwinfo_freqlist(struct ubus_context *ctx, struct ubus_object *obj,
 }
 
 static int
-rpc_iwinfo_txpowerlist(struct ubus_context *ctx, struct ubus_object *obj,
-                       struct ubus_request_data *req, const char *method,
+rpc_iwinfo_txpowerlist(const char *method,
                        struct blob_attr *msg)
 {
 	int i, rv, len, pwr, off;
@@ -528,8 +526,7 @@ rpc_iwinfo_lookup_country(char *buf, int len, int iso3166)
 }
 
 static int
-rpc_iwinfo_countrylist(struct ubus_context *ctx, struct ubus_object *obj,
-                       struct ubus_request_data *req, const char *method,
+rpc_iwinfo_countrylist(const char *method,
                        struct blob_attr *msg)
 {
 	int rv, len;
@@ -588,8 +585,7 @@ rpc_iwinfo_countrylist(struct ubus_context *ctx, struct ubus_object *obj,
 }
 
 static int
-rpc_iwinfo_devices(struct ubus_context *ctx, struct ubus_object *obj,
-                   struct ubus_request_data *req, const char *method,
+rpc_iwinfo_devices(const char *method,
                    struct blob_attr *msg)
 {
 	void *c;
@@ -643,9 +639,6 @@ static void receive_call_result_data(struct blob_attr *msg)
 
 
 int main(int argc, char* argv[]){
-  struct ubus_context ctx_l;
-  struct ubus_object obj_l;
-  struct ubus_request_data req_l;
   char method_l[] = "";
 
 /*  char trick[] = "{\"device\":\"wlan0\"}"; */
@@ -654,7 +647,7 @@ int main(int argc, char* argv[]){
   struct blob_buf b ={0};
   blob_buf_init(&b, 0);
   blobmsg_add_json_from_string(&b, trick);
-  rpc_iwinfo_scan(&ctx_l, &obj_l, &req_l, method_l, b.head);
+  rpc_iwinfo_scan(b.head);
 
   char *str;
   str = blobmsg_format_json(buf.head, true);
