@@ -277,7 +277,7 @@ rpc_iwinfo_info(struct ubus_context *ctx, struct ubus_object *obj,
 	rpc_iwinfo_call_str("name", iw->hardware_name);
 	blobmsg_close_table(&buf, c);
 
-	ubus_send_reply(ctx, req, buf.head);
+	/* ubus_send_reply(ctx, req, buf.head);*/
 
 	rpc_iwinfo_close();
 
@@ -336,7 +336,7 @@ rpc_iwinfo_scan(struct ubus_context *ctx, struct ubus_object *obj,
 
 	blobmsg_close_array(&buf, c);
 
-	ubus_send_reply(ctx, req, buf.head);
+	/* ubus_send_reply(ctx, req, buf.head);*/
 
 	rpc_iwinfo_close();
 
@@ -399,7 +399,7 @@ rpc_iwinfo_assoclist(struct ubus_context *ctx, struct ubus_object *obj,
 
 	blobmsg_close_array(&buf, c);
 
-	ubus_send_reply(ctx, req, buf.head);
+	/* ubus_send_reply(ctx, req, buf.head);*/
 
 	rpc_iwinfo_close();
 
@@ -448,7 +448,7 @@ rpc_iwinfo_freqlist(struct ubus_context *ctx, struct ubus_object *obj,
 
 	blobmsg_close_array(&buf, c);
 
-	ubus_send_reply(ctx, req, buf.head);
+	/* ubus_send_reply(ctx, req, buf.head); */
 
 	rpc_iwinfo_close();
 
@@ -499,7 +499,7 @@ rpc_iwinfo_txpowerlist(struct ubus_context *ctx, struct ubus_object *obj,
 
 	blobmsg_close_array(&buf, c);
 
-	ubus_send_reply(ctx, req, buf.head);
+	/* ubus_send_reply(ctx, req, buf.head); */
 
 	rpc_iwinfo_close();
 
@@ -580,7 +580,7 @@ rpc_iwinfo_countrylist(struct ubus_context *ctx, struct ubus_object *obj,
 
 	blobmsg_close_array(&buf, c);
 
-	ubus_send_reply(ctx, req, buf.head);
+	/*	ubus_send_reply(ctx, req, buf.head);*/
 
 	rpc_iwinfo_close();
 
@@ -618,7 +618,7 @@ rpc_iwinfo_devices(struct ubus_context *ctx, struct ubus_object *obj,
 
 	closedir(d);
 
-	ubus_send_reply(ctx, req, buf.head);
+	/*	ubus_send_reply(ctx, req, buf.head);*/
 
 	rpc_iwinfo_close();
 
