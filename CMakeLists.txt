@@ -28,9 +28,6 @@ IF(crypt STREQUAL "crypt-NOTFOUND")
   SET(crypt "")
 ENDIF()
 
-ADD_EXECUTABLE(rpcd main.c exec.c session.c uci.c plugin.c)
-TARGET_LINK_LIBRARIES(rpcd ubox ubus uci dl blobmsg_json ${json} ${crypt})
-
 ADD_EXECUTABLE(iwinfo_cli iwinfo_cli.c)
 TARGET_LINK_LIBRARIES(iwinfo_cli ubox iwinfo blobmsg_json nl-3 nl-genl-3)
 
