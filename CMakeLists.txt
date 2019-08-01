@@ -28,7 +28,9 @@ IF(crypt STREQUAL "crypt-NOTFOUND")
   SET(crypt "")
 ENDIF()
 
+LINK_DIRECTORIES(${LIBPATH})
 ADD_EXECUTABLE(iwinfo_cli iwinfo_cli.c)
+TARGET_INCLUDE_DIRECTORIES(iwinfo_cli PRIVATE ${IWINFO_INCLUDE})
 TARGET_LINK_LIBRARIES(iwinfo_cli ubox iwinfo blobmsg_json nl-3 nl-genl-3)
 
 SET(PLUGINS "")
